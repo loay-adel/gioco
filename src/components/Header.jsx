@@ -10,7 +10,6 @@ import {
   MenuItem,
 } from "@material-tailwind/react";
 import { useState, useEffect, useContext } from "react";
-import Store from "../context/Store";
 import { Link } from "react-router-dom";
 import { MdArrowDropDown } from "react-icons/md";
 import { HiOutlineBars4, HiMiniXMark } from "react-icons/hi2";
@@ -30,34 +29,31 @@ const Header = () => {
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
-        as="li"
+        as={Link}
+        to="/home"
         variant="small"
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center">
-          Home
-        </a>
+        Home
       </Typography>
       <Typography
-        as="li"
+        as={Link}
+        to="/cart"
         variant="small"
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
+        Cart
       </Typography>
       <Typography
-        as="li"
+        as={Link}
+        to=""
         variant="small"
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
+        Blocks
       </Typography>
     </ul>
   );

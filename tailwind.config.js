@@ -22,14 +22,18 @@ module.exports = withMT({
     },
     extend: {
       colors: {
-        main: "#DB4444",
-        sec: "#F5F5F5",
+        primaryYellow: "#F4B400", // أصفر - الأزرار الرئيسية
+        primaryPink: "#E91E63", // وردي - التفاعل
+        primaryPurple: "#9C27B0", // بنفسجي - الخلفيات الجزئية
+        primaryBlue: "#00B8D4", // أزرق تركواز - البطاقات
+        primaryBlack: "#000000", // أسود - خلفية أو نصوص
+        primaryWhite: "#FFFFFF", // أبيض للنصوص على خلفية غامقة
       },
       fontFamily: {
         mainFont: ["Poppins", "sans-serif"],
       },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [],
 });
 /* eslint-enable no-undef */
