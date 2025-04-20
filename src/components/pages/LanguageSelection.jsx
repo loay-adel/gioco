@@ -1,18 +1,18 @@
 import { Button } from "@material-tailwind/react";
-import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const LanguageSelection = () => {
-  const { setLanguage } = useCart();
+  const { i18n } = useTranslation();
   const navigate = useNavigate();
 
   const handleArabicSelection = () => {
-    setLanguage("ar");
+    i18n.changeLanguage("ar");
     navigate("/table");
   };
 
   const handleEnglishSelection = () => {
-    setLanguage("en");
+    i18n.changeLanguage("en");
     navigate("/table");
   };
 
@@ -20,7 +20,7 @@ const LanguageSelection = () => {
     <div className="relative flex flex-col justify-center items-center text-white h-[calc(100vh-147px)] overflow-hidden">
       <div className="absolute inset-0 bg-[url('logo-cuted-header.png')] bg-cover bg-center blur-sm -z-10"></div>
 
-      <div className="">
+      <div>
         <img src="tefo.png" alt="our tefo" className="h-80" />
       </div>
 

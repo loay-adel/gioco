@@ -1,44 +1,46 @@
-import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { useTranslation } from "react-i18next";
 
 const Table = () => {
   const { tableNum, settableNum } = useCart();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
   const numbers = Array.from({ length: 75 }, (_, i) => i + 1);
 
   const handleClick = (number) => {
     settableNum(number.toString());
 
     Swal.fire({
-      title: "Number Selected",
-      text: `You clicked number: ${number}`,
+      title: t("selected_title"),
+      text: t("selected_message", { number }),
       icon: "success",
-      confirmButtonText: "OK",
+      showConfirmButton: false, // Hide the confirm button
       background: "#f3f4f6",
-      confirmButtonColor: "#4CAF50",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Example: Navigate to another route with the number as state
-        navigate("/home", { state: { selectedNumber: number } });
-      }
+      timer: 2000, // The modal will automatically close after 2 seconds (2000ms)
+      timerProgressBar: true, // Optional: show a progress bar
     });
 
-    console.log(`Clicked number: ${number}`);
+    // Navigate after a delay to allow SweetAlert to finish
+    setTimeout(() => {
+      navigate("/home", { state: { selectedNumber: number } });
+    }, 2000); // Same delay as the timer
   };
 
   return (
     <div className="container mx-auto p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-6 text-center">
-        CLick on your table Number :
+        {t("select_prompt")}
       </h1>
 
       {/* tableNum area for the selected number */}
       {tableNum && (
         <div className="mb-6 p-4 bg-gray-100 rounded-lg text-center">
           <p className="text-lg font-semibold">
-            Selected Number: <span className="text-green-600">{tableNum}</span>
+            {t("selected_number")}:{" "}
+            <span className="text-green-600">{tableNum}</span>
           </p>
         </div>
       )}
@@ -48,8 +50,8 @@ const Table = () => {
           <button
             key={number}
             onClick={() => handleClick(number)}
-            className={`w-24 h-24 rounded-full text-white font-medium flex items-center justify-center
-                      hover:bg-green-600 transition-colors duration-200 shadow-md
+            className={`w-32 h-32 md:w-24 md:h-24 rounded-full text-white font-medium flex items-center justify-center
+                      hover:bg-[#3C9893] transition-colors duration-200 shadow-md bg-[#4BBEB8]
                       focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50
                       ${
                         tableNum === number.toString()

@@ -9,7 +9,7 @@ import LanguageSelection from "./components/pages/LanguageSelection";
 import Home from "./components/pages/Home";
 import Table from "./components/pages/Table";
 import Cart from "./components/pages/Cart";
-
+import AdminLogin from "./components/pages/AdminLogin";
 const UserLayout = () => {
   return (
     <>
@@ -18,8 +18,9 @@ const UserLayout = () => {
         <Route index element={<LanguageSelection />} />
         <Route path="home" element={<Home />} />
         <Route path="table" element={<Table />} />
-        <Route path="cart" element={<Cart />}></Route>
+        <Route path="cart" element={<Cart />} />
         <Route path="*" element={<Error />} />
+        <Route path="signin" element={<AdminLogin />}></Route>
       </Routes>
       <Footer />
     </>

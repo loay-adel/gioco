@@ -32,17 +32,15 @@
 // export default AdminLayout;
 import { Routes, Route, Outlet } from "react-router-dom";
 import AdminView from "./components/pages/admin-view/AdminView";
-import CategoriesPanel from "./components/pages/admin-view/CategoriesPanel";
-import MenuItemsPanel from "./components/pages/admin-view/MenuItemsPanel";
+import MenuItemPanel from "./components/pages/admin-view/MenuItemsPanel";
 import OrdersPanel from "./components/pages/admin-view/OrdersPanel";
-
+import Dashboard from "./components/pages/admin-view/Dashboard";
 const AdminLayout = () => {
   return (
     <Routes>
       <Route element={<AdminView />}>
-        <Route index element={<CategoriesPanel />} /> {/* Default admin view */}
-        <Route path="categories" element={<CategoriesPanel />} />
-        <Route path="menu-items" element={<MenuItemsPanel />} />
+        <Route index element={<Dashboard />}></Route>
+        <Route path="menu" element={<MenuItemPanel />} />
         <Route path="orders" element={<OrdersPanel />} />
       </Route>
     </Routes>

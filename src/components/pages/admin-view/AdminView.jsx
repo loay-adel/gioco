@@ -1,28 +1,57 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FiGrid,
   FiList,
   FiTag,
   FiShoppingCart,
-  FiSettings,
   FiLogOut,
-  FiPlus,
-  FiEdit2,
-  FiTrash2,
 } from "react-icons/fi";
+import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 export default function AdminView() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const session = localStorage.getItem("adminSession");
+    if (!session) {
+      Swal.fire({
+        icon: "error",
+        title: "Unauthorized",
+        text: "You must be signed in as admin to access this page.",
+        confirmButtonText: "Go to Login",
+      }).then(() => {
+        navigate("/signin", { replace: true });
+      });
+    }
+  }, [navigate]);
+
+  function signout() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be signed out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, sign me out",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("adminSession");
+        navigate("/");
+      }
+    });
+  }
 
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: FiGrid },
     { name: "Menu Items", href: "/admin/menu", icon: FiList },
-    { name: "Categories", href: "/admin/categories", icon: FiTag },
     { name: "Orders", href: "/admin/orders", icon: FiShoppingCart },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" dir="ltr">
       {/* Sidebar */}
       <div className="fixed inset-y-0 z-10 flex w-64 flex-col border-r border-gray-200 bg-white">
         <div className="flex h-16 items-center px-6 border-b border-gray-200">
@@ -50,7 +79,10 @@ export default function AdminView() {
         </nav>
 
         <div className="p-4 border-t border-gray-200">
-          <button className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
+          <button
+            className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100"
+            onClick={signout}
+          >
             <FiLogOut className="mr-3 h-5 w-5" />
             Sign out
           </button>

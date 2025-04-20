@@ -22,12 +22,18 @@ module.exports = withMT({
     },
     extend: {
       colors: {
-        primaryYellow: "#F4B400", // أصفر - الأزرار الرئيسية
-        primaryPink: "#E91E63", // وردي - التفاعل
+        primaryYellow: "#FFD700", //  (for product cards and highlights).
+        primaryGreen: "#2ECC71", // (for interactive elements like table selection).
+        primaryRED: "#E74C3C", // (for errors and important notifications).
         primaryPurple: "#9C27B0", // بنفسجي - الخلفيات الجزئية
-        primaryBlue: "#00B8D4", // أزرق تركواز - البطاقات
+        primaryBlue: {
+          100: "#2776ab",
+          900: "#3498DB",
+        }, // (for navigation and secondary actions).
         primaryBlack: "#000000", // أسود - خلفية أو نصوص
-        primaryWhite: "#FFFFFF", // أبيض للنصوص على خلفية غامقة
+        primaryText: "#333333",
+        primaryBackground: "#F5F5F5", // (main-background)
+        primaryBorder: "#CCCCCC",
       },
       fontFamily: {
         mainFont: ["Poppins", "sans-serif"],
