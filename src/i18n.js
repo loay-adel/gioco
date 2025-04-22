@@ -51,11 +51,21 @@ const resources = {
       food_item_14: "Fries",
 
       // Table
+      table: "table",
       select_prompt: "Click on your table number",
       selected_title: "Number Selected",
       selected_message: "You selected table number: {{number}}",
       selected_number: "Selected Number",
+      chooseTable: "You didn't choose table yet",
       ok: "OK",
+
+      // order state
+
+      pending: "Pending",
+      preparing: "Preparing",
+      ready_to_pickup: "Ready to Pickup",
+      done: "Done",
+      default: "Unknown",
 
       // New keys
       fetch_error: "There was an error fetching the data.",
@@ -75,6 +85,20 @@ const resources = {
       close_cart: "Close Cart",
       remove_item_confirm: "Are you sure you want to remove this item?",
       remove_item_message: "Item removed successfully.",
+      tax: "tax",
+      remove: "Remove",
+      cancel: "Cancel",
+      removed: "Removed",
+      item_removed: "Item removed successfully.",
+      order_success_title: "Order Confirmed!",
+      order_success_message: "Your order has been placed successfully.",
+      order_error_title: "Order Failed",
+      order_error_message: "Something went wrong while placing the order.",
+      table_number_placeholder: "Enter table number",
+      table_number_required: "Table number is required.",
+      confirm: "Confirm",
+      continue_shopping: "Continue Shopping",
+      previous_orders: "Previous Orders",
     },
   },
   ar: {
@@ -125,11 +149,21 @@ const resources = {
       food_item_14: "بطاطس",
 
       // Table
+      table: "طاوله",
       select_prompt: "اختر رقم الطاوله",
       selected_title: "تم اختيار رقم الطاولة",
       selected_message: "لقد اختارت  الطاوله رقم: {{number}}",
       selected_number: "الرقم المختار",
+      chooseTable: "لم تختر طاوله بعد",
       ok: "موافق",
+
+      // order state
+
+      pending: "قيد الانتظار",
+      preparing: "جارٍ التحضير",
+      ready_to_pickup: "جاهز للاستلام",
+      done: "تم الانتهاء",
+      default: "غير محدد",
 
       // New keys
       fetch_error: "حدث خطأ أثناء جلب البيانات.",
@@ -149,6 +183,20 @@ const resources = {
       close_cart: "إغلاق السلة",
       remove_item_confirm: "هل أنت متأكد من أنك تريد إزالة هذا العنصر؟",
       remove_item_message: "تم إزالة العنصر بنجاح.",
+      tax: "ضريبة",
+      remove: "إزالة",
+      cancel: "إلغاء",
+      removed: "تمت الإزالة",
+      item_removed: "تم إزالة العنصر بنجاح.",
+      order_success_title: "تم تأكيد الطلب!",
+      order_success_message: "تم إرسال طلبك بنجاح.",
+      order_error_title: "فشل في الطلب",
+      order_error_message: "حدث خطأ أثناء إرسال الطلب.",
+      table_number_placeholder: "أدخل رقم الطاولة",
+      table_number_required: "رقم الطاولة مطلوب.",
+      confirm: "تأكيد",
+      continue_shopping: "متابعة التسوق",
+      previous_orders: "الطلبات السابقة",
     },
   },
 };

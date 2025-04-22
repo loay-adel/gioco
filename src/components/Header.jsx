@@ -17,13 +17,16 @@ import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const { t, i18n } = useTranslation();
-  const [openMenu, setOpenMenu] = useState(false);
   const [openNav, setOpenNav] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState({
     code: "en",
     name: "English",
     flag: "🇺🇸",
   });
+
+  // Separate state for desktop and mobile menus
+  const [openDesktopMenu, setOpenDesktopMenu] = useState(false);
+  const [openMobileMenu, setOpenMobileMenu] = useState(false);
 
   useEffect(() => {
     window.addEventListener(
@@ -41,7 +44,8 @@ const Header = () => {
     const selectedLang = languages.find((lang) => lang.code === lng);
     setCurrentLanguage(selectedLang);
     i18n.changeLanguage(lng);
-    setOpenMenu(false);
+    setOpenDesktopMenu(false);
+    setOpenMobileMenu(false);
   };
 
   const navList = (
@@ -96,7 +100,7 @@ const Header = () => {
         </Typography>
         <div className="mr-4 hidden lg:block">{navList}</div>
         <div className="hidden flex-wrap items-center gap-2 lg:flex">
-          <Menu open={openMenu} handler={setOpenMenu}>
+          <Menu open={openDesktopMenu} handler={setOpenDesktopMenu}>
             <MenuHandler>
               <Button
                 size="sm"
@@ -109,7 +113,7 @@ const Header = () => {
                 {currentLanguage.name}
                 <MdArrowDropDown
                   className={`h-3.5 w-3.5 transition-transform ${
-                    openMenu ? "rotate-180" : ""
+                    openDesktopMenu ? "rotate-180" : ""
                   }`}
                 />
               </Button>
@@ -142,7 +146,7 @@ const Header = () => {
       <Collapse open={openNav}>
         {navList}
         <div className="flex w-full flex-nowrap items-center gap-x-4 lg:hidden">
-          <Menu open={openMenu} handler={setOpenMenu}>
+          <Menu open={openMobileMenu} handler={setOpenMobileMenu}>
             <MenuHandler>
               <Button
                 fullWidth
@@ -154,7 +158,7 @@ const Header = () => {
                 <MdArrowDropDown
                   strokeWidth={2.5}
                   className={`h-3.5 w-3.5 transition-transform ${
-                    openMenu ? "rotate-180" : ""
+                    openMobileMenu ? "rotate-180" : ""
                   }`}
                 />
               </Button>

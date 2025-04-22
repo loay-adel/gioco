@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import { useCart } from "../../context/CartContext";
@@ -23,11 +23,11 @@ const Cart = () => {
     language,
     orders,
     createOrder,
-    updateOrderStatus,
-    deleteOrder,
   } = useCart();
 
   const { t } = useTranslation();
+  const [showInvoice, setShowInvoice] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
@@ -75,6 +75,30 @@ const Cart = () => {
       });
     }
   };
+  const generateInvoice = (order) => {
+    const subtotal = totalPrice;
+    const vat = subtotal * 0.15;
+    const totalWithVat = subtotal + vat;
+
+    const invoiceData = {
+      customerName: order.customerName || "Guest",
+      items: cart.map((item) => ({
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      date: new Date().toLocaleDateString(),
+      invoiceNumber: `INV-${order.id || Math.floor(Math.random() * 10000)}`,
+      tableNumber: order.tableNumber || "Takeaway",
+      status: order.status,
+      subtotal,
+      vat,
+      total: totalWithVat,
+    };
+
+    setOrderDetails(invoiceData);
+    setShowInvoice(true);
+  };
 
   const handleOrder = async () => {
     let tableNumber = tableNum;
@@ -115,23 +139,16 @@ const Cart = () => {
       };
 
       const newOrder = await createOrder(orderData);
-      clearCart();
-
       await MySwal.fire({
         title: t("order_success_title"),
-        text: t("order_created", { id: newOrder.id }),
+        text: t("order_success_message"),
         icon: "success",
-        confirmButtonText: t("ok"),
+        timer: 1500,
+        showConfirmButton: false,
         background: "#f3f4f6",
-        customClass: {
-          container: language === "ar" ? "swal-rtl" : "",
-          title: language === "ar" ? "text-right" : "",
-          htmlContainer: language === "ar" ? "text-right" : "",
-          confirmButton: language === "ar" ? "mr-auto" : "",
-        },
       });
 
-      navigate("/home");
+      generateInvoice(newOrder);
     } catch (error) {
       await MySwal.fire({
         title: t("order_error_title"),
@@ -215,10 +232,13 @@ const Cart = () => {
             </div>
 
             <div className="mt-6 pt-4 border-t">
+              <p className="text-end text-lg font-bold capitalize   ">
+                {t("tax")}: 15%
+              </p>
               <div className="flex justify-between font-bold text-lg mb-6">
                 <span>{t("total")}:</span>
                 <span>
-                  {totalPrice.toFixed(2)} {t("sar")}
+                  {(totalPrice.toFixed(2) * 15) / 100 + totalPrice} {t("sar")}
                 </span>
               </div>
               <button
@@ -291,14 +311,127 @@ const Cart = () => {
                 <div className="mt-3 flex justify-between items-center">
                   <p className="font-medium">
                     {t("total")}:{" "}
-                    {order.products
-                      ?.reduce((sum, product) => sum + product.price, 0)
-                      .toFixed(2)}{" "}
+                    {(
+                      order.products?.reduce(
+                        (sum, product) => sum + product.price,
+                        0
+                      ) * 1.15
+                    ).toFixed(2)}{" "}
                     {t("sar")}
                   </p>
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Invoice Popup */}
+      {showInvoice && orderDetails && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-auto">
+            <div className="p-6">
+              <div
+                className={`flex justify-between items-center mb-6 ${
+                  language === "ar" ? "flex-row-reverse" : ""
+                }`}
+              >
+                <div>
+                  <h2 className="text-2xl font-bold">{t("invoice")}</h2>
+                  <p className="text-gray-600">#{orderDetails.invoiceNumber}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">{orderDetails.date}</p>
+                  <p className="text-sm text-gray-500">
+                    {t("status")}: {orderDetails.status}
+                  </p>
+                </div>
+              </div>
+
+              <div
+                className={`grid grid-cols-2 gap-4 mb-6 ${
+                  language === "ar" ? "text-right" : ""
+                }`}
+              >
+                <div>
+                  <h3 className="font-bold mb-2">{t("customer")}</h3>
+                  <p>{orderDetails.customerName}</p>
+                </div>
+                <div className={language === "ar" ? "text-left" : "text-right"}>
+                  <h3 className="font-bold mb-2">{t("table")}</h3>
+                  <p>{orderDetails.tableNumber}</p>
+                </div>
+              </div>
+
+              <table className="w-full mb-6">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="p-3 text-left">{t("item")}</th>
+                    <th className="p-3 text-right">{t("quantity")}</th>
+                    <th className="p-3 text-right">{t("price")}</th>
+                    <th className="p-3 text-right">{t("total")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orderDetails.items.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-3">{item.name}</td>
+                      <td className="p-3 text-right">{item.quantity}</td>
+                      <td className="p-3 text-right">
+                        {item.price.toFixed(2)} {t("sar")}
+                      </td>
+                      <td className="p-3 text-right">
+                        {(item.price * item.quantity).toFixed(2)} {t("sar")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="bg-gray-50">
+                    <td className="p-3 font-bold" colSpan="3">
+                      {t("subtotal")}
+                    </td>
+                    <td className="p-3 font-bold text-right">
+                      {orderDetails.subtotal.toFixed(2)} {t("sar")}
+                    </td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="p-3 font-bold" colSpan="3">
+                      {t("vat")} (15%)
+                    </td>
+                    <td className="p-3 font-bold text-right">
+                      {orderDetails.vat.toFixed(2)} {t("sar")}
+                    </td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="p-3 font-bold" colSpan="3">
+                      {t("total")}
+                    </td>
+                    <td className="p-3 font-bold text-right">
+                      {orderDetails.total.toFixed(2)} {t("sar")}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <div className="text-center text-sm text-gray-500 mt-8">
+                <p>{t("thank_you_message")}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-end p-4">
+              <Button
+                color="blue"
+                onClick={() => {
+                  setShowInvoice(false);
+                  clearCart();
+                  navigate("/home");
+                }}
+                fullWidth
+              >
+                {t("close")}
+              </Button>
+            </div>
           </div>
         </div>
       )}

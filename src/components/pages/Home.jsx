@@ -98,9 +98,11 @@ const Home = () => {
         <span className="pl-2">{t("your_table_number")} :</span>
         <span className="mx-2 p-2 rounded text-primaryGreen">
           {tableNum ? (
-            <span>Table {tableNum}</span>
+            <span>
+              {t("table")} {tableNum}
+            </span>
           ) : (
-            <span className="text-primaryRED">You didn't choose table</span>
+            <span className="text-primaryRED">{t("chooseTable")}</span>
           )}
         </span>
       </div>
@@ -127,7 +129,7 @@ const Home = () => {
                         : "bg-gray-100 text-gray-800"
                     }`}
                   >
-                    {order.status.replace(/_/g, " ")}
+                    {t(order.status.replace(/_/g, " "))}
                   </span>
                 </div>
                 <div className="text-sm text-gray-600 mt-1">
@@ -166,7 +168,7 @@ const Home = () => {
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="bg-primaryBlue-900 rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow"
+            className="bg-primaryBlue-900 rounded-xl p-2 shadow-md hover:shadow-lg transition-shadow"
           >
             <div className="w-full h-40 bg-gray-100 rounded-lg mb-4 overflow-hidden">
               <img
@@ -175,17 +177,18 @@ const Home = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-medium text-primaryText">
+            <div className="flex items-center justify-between flex-col">
+              <span className="text-lg font-medium text-white block">
                 {item.name}
               </span>
-              <div className="flex items-center">
-                <span className="text-primaryText">
+
+              <div className="flex items-center flex-row justify-between w-full">
+                <span className="text-white">
                   {item.price} {t("sar")}
                 </span>
                 <button
                   onClick={() => addToCart(item)}
-                  className="ml-2 bg-white p-2 rounded-lg hover:bg-primaryBlue-100 transition"
+                  className=" bg-white p-2 rounded-lg hover:bg-primaryBlue-100 transition"
                   aria-label={t("add_to_cart")}
                 >
                   🛒
@@ -286,10 +289,11 @@ const Home = () => {
 
                   {/* Cart Summary */}
                   <div className="mt-6 border-t pt-4">
+                    <span>{t("tax")}:15%</span>
                     <div className="flex justify-between font-bold text-lg mb-4">
                       <span>{t("total")}:</span>
                       <span>
-                        {totalPrice} {t("sar")}
+                        {(totalPrice * 15) / 100 + totalPrice} {t("sar")}
                       </span>
                     </div>
                     <button

@@ -50,13 +50,13 @@ const Table = () => {
           <button
             key={number}
             onClick={() => handleClick(number)}
-            className={`w-32 h-32 md:w-24 md:h-24 rounded-full text-white font-medium flex items-center justify-center
-                      hover:bg-[#3C9893] transition-colors duration-200 shadow-md bg-[#4BBEB8]
+            className={`w-28 h-28 text-4xl md:w-24 md:h-24 rounded-full text-white font-medium flex items-center justify-center
+                      hover:bg-[#3C9893] transition-colors duration-200 shadow-md 
                       focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50
                       ${
                         tableNum === number.toString()
-                          ? "bg-black"
-                          : "bg-green-500"
+                          ? "bg-green-700 "
+                          : "bg-[#4BBEB8]"
                       }`}
           >
             {number}
